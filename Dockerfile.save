@@ -1,0 +1,7 @@
+FROM klakegg/hugo:latest
+
+WORKDIR /johamdocker pull klakegg/hugo:0.85.0-ext-ubuntu-onbuild
+
+COPY ./joham /joham
+
+ENTRYPOINT ["hugo", "server", "-D"]
