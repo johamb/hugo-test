@@ -41,7 +41,7 @@ resource "google_compute_url_map" "https" {
   name        = "url-map"
   description = "a description"
 
-  default_service = google_compute_backend_service.https.id
+  default_service = google_compute_backend_bucket.static-site.id
 
   host_rule {
     hosts        = [var.domain]
@@ -50,27 +50,37 @@ resource "google_compute_url_map" "https" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = google_compute_backend_service.https.id
+    default_service = google_compute_backend_bucket.static-site.id
 
     path_rule {
       paths   = ["/*"]
-      service = google_compute_backend_service.https.id
+      service = google_compute_backend_bucket.static-site.id
     }
   }
 }
 
-resource "google_compute_backend_service" "https" {
-  name        = "backend-service"
-  port_name   = "http"
-  protocol    = "HTTP"
-  timeout_sec = 10
-
-  health_checks = [google_compute_http_health_check.https.id]
+resource "google_compute_backend_bucket" "static-site" {
+  name        = "hugo-test-bucket"
+  bucket_name = google_storage_bucket.static-site.name
+  enable_cdn  = true
 }
 
-resource "google_compute_http_health_check" "https" {
+resource "google_compute_http_health_check" "static-site" {
   name               = "http-health-check"
   request_path       = "/"
   check_interval_sec = 1
   timeout_sec        = 1
+}
+
+resource "google_compute_global_address" "static-ip" {
+  name     = "static-ip"
+}
+
+resource "google_compute_global_forwarding_rule" "static-site" {
+  name                  = "static-site-forwarding-rule"
+  load_balancing_scheme = "EXTERNAL"
+  ip_address            = google_compute_global_address.static-ip.address
+  ip_protocol           = "TCP"
+  port_range            = "443"
+  target                = google_compute_target_https_proxy.https.self_link
 }

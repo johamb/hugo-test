@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    
+    
+    
+    <link>http://example.org/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 12 Aug 2021 11:39:11 +0200</lastBuildDate>
+    
+	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Shortcuts</title>
+      <link>http://example.org/posts/shortcuts/</link>
+      <pubDate>Thu, 12 Aug 2021 11:39:11 +0200</pubDate>
+      
+      <guid>http://example.org/posts/shortcuts/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          US International Keyboard Layout  right ALT + q = ä right ALT + Shift + q = Ä right ALT + y = ü right ALT + Shift + y = Ü right ALT + p = ö right ALT + Shift + p = Ö right ALT + s = ß right ALT + 5 = €  
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>First Post</title>
+      <link>http://example.org/posts/first-post/</link>
+      <pubDate>Sun, 18 Jul 2021 18:12:56 +0200</pubDate>
+      
+      <guid>http://example.org/posts/first-post/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>

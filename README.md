@@ -7,4 +7,6 @@ testing hugo ssg
 cd terraform
 terraform init
 gcloud auth application-default login
+terraform apply
 ```
+### Step 2: Deploy
