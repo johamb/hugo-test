@@ -9,7 +9,7 @@ resource "google_storage_bucket" "static-site" {
   location      = var.project_location
   force_destroy = true
 
-  uniform_bucket_level_access = true
+  uniform_bucket_level_access = false
 
   website {
     main_page_suffix = "index.html"
@@ -21,6 +21,12 @@ resource "google_storage_bucket" "static-site" {
     response_header = ["*"]
     max_age_seconds = 3600
   }
+}
+
+resource "google_storage_default_object_access_control" "static-site" {
+  bucket = google_storage_bucket.static-site.name
+  role   = "READER"
+  entity = "allUsers"
 }
 
 resource "google_compute_target_https_proxy" "https" {
