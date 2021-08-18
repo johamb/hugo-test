@@ -35,11 +35,16 @@ resource "google_compute_target_https_proxy" "https" {
   ssl_certificates = [google_compute_managed_ssl_certificate.https.id]
 }
 
+resource "google_compute_target_http_proxy" "http" {
+  name    = "http-proxy"
+  url_map = google_compute_url_map.https-redirect.self_link
+}
+
 resource "google_compute_managed_ssl_certificate" "https" {
   name = "ssl-certificate"
 
   managed {
-    domains = [var.domain]
+    domains = [var.domain, "www.${var.domain}"]
   }
 }
 
@@ -62,6 +67,16 @@ resource "google_compute_url_map" "https" {
       paths   = ["/*"]
       service = google_compute_backend_bucket.static-site.id
     }
+  }
+}
+
+resource "google_compute_url_map" "https-redirect" {
+  name = "https-redirect"
+
+  default_url_redirect {
+    https_redirect         = true
+    strip_query            = false
+    redirect_response_code = "PERMANENT_REDIRECT"
   }
 }
 
@@ -89,4 +104,12 @@ resource "google_compute_global_forwarding_rule" "static-site" {
   ip_protocol           = "TCP"
   port_range            = "443"
   target                = google_compute_target_https_proxy.https.self_link
+}
+
+resource "google_compute_global_forwarding_rule" "http" {
+  name        = "http"
+  target      = google_compute_target_http_proxy.http.self_link
+  ip_address  = google_compute_global_address.static-ip.address
+  ip_protocol = "TCP"
+  port_range  = "80"
 }
